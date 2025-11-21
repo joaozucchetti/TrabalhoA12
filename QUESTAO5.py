@@ -86,11 +86,9 @@ for v in vertices:
 
 print("\n" + "=" * 80)
 
-# Create SPT (Shortest Path Tree) visualization
 print("\n4. ÁRVORE DE CUSTO MÍNIMO (desde V0):")
 print("-" * 80)
 
-# Build the shortest path tree
 SPT = nx.DiGraph()
 SPT.add_nodes_from(vertices)
 
@@ -102,7 +100,6 @@ print(f"Arestas da Árvore de Custo Mínimo:")
 total_weight = 0
 spt_edges_info = []
 for u, v, data in SPT.edges(data=True):
-    # Find the weight in the original graph
     for s, t, w in edges:
         if s == u and t == v:
             print(f"  {u} → {v}: {w}")
@@ -112,20 +109,17 @@ for u, v, data in SPT.edges(data=True):
 
 print(f"\nCusto Total: {total_weight:.1f}")
 
-# Visualization
 print("\nGerando visualização da árvore de custo mínimo...")
 
 pos = nx.spring_layout(G, seed=42, k=2.5, iterations=50)
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8))
 
-# Plot 1: Original graph with distances from source
 ax1.set_title(f"Grafo Original\n(Distâncias de {source} - Dijkstra)", fontsize=15, fontweight='bold', color='darkblue')
 nx.draw_networkx_edges(G, pos, ax=ax1, alpha=0.4, edge_color='darkgray', style='dashed', width=2.5, 
                        arrowsize=20, arrowstyle='->')
 nx.draw_networkx_nodes(G, pos, ax=ax1, node_size=1000, node_color='lightblue', edgecolors='darkblue', linewidths=3)
 
-# Add distance labels inside nodes
 labels_with_dist = {}
 for v in vertices:
     if distance[v] == INF:
@@ -135,24 +129,20 @@ for v in vertices:
 
 nx.draw_networkx_labels(G, pos, ax=ax1, labels=labels_with_dist, font_size=12, font_weight='bold')
 
-# Draw edges with weights
 edge_labels = nx.get_edge_attributes(G, 'weight')
 nx.draw_networkx_edge_labels(G, pos, ax=ax1, edge_labels=edge_labels, font_size=11, font_weight='bold')
 
 ax1.axis('off')
 
-# Plot 2: Shortest Path Tree
 ax2.set_title(f"Árvore de Custo Mínimo\n(Dijkstra de {source})", fontsize=15, fontweight='bold', color='darkgreen')
 nx.draw_networkx_edges(G, pos, ax=ax2, alpha=0.1, edge_color='lightgray', style='dashed', width=1)
 nx.draw_networkx_nodes(G, pos, ax=ax2, node_size=1000, node_color='lightgreen', edgecolors='darkgreen', linewidths=3)
 nx.draw_networkx_labels(G, pos, ax=ax2, labels=labels_with_dist, font_size=12, font_weight='bold')
 
-# Draw SPT edges in dark red
 if SPT.number_of_edges() > 0:
     nx.draw_networkx_edges(SPT, pos, ax=ax2, width=4.5, edge_color='darkred', alpha=0.9, 
                           arrowsize=25, arrowstyle='->', connectionstyle='arc3,rad=0.1')
     
-    # Draw SPT edge labels
     spt_edge_labels = {}
     for u, v in SPT.edges():
         for s, t, w in edges:
